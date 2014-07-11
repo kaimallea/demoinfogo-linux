@@ -13,11 +13,11 @@ Building demoinfogo
 
 In order to build demoinfogo on Windows, follow these steps
 
-1. Download and extract demoinfogo.zip (XXX). This creates a folder called demoinfogo.
-2. Download protobuf-2.5.0.zip (http://code.google.com/p/protobuf/downloads/detail?name=protobuf-2.5.0.zip&can=2&q=) and extract it into the demoinfogo folder. This creates the folder demoinfogp/protobuf-2.5.0.
-3. Download the protocol buffer compiler protoc-2.5.0.zip (http://code.google.com/p/protobuf/downloads/detail?name=protoc-2.5.0-win32.zip&can=2&q=) and extract it into the demoinfogo/protoc-2.5.0-win32 folder that was created when you extracted demoinfogo.zip.
-4. Open demoinfogo/protobuf-2.5.0/vsprojects/protobuf.sln in Microsoft Visual Studio 2010. Allow Visual Studio to convert projects. Once loaded, build the Release configuration of libprotobuf. Building any other projects is not required.
-5. Open the project demoinfogo/demoinfogo.vcxproj in Microsoft Visual Studio 2010. Building the Release configuration creates the binary demoinfogo/demoinfogo.exe
+1. Download and extract `demoinfogo.zip` (XXX). This creates a folder called `demoinfogo`.
+2. Download `protobuf-2.5.0.zip` (http://code.google.com/p/protobuf/downloads/detail?name=protobuf-2.5.0.zip&can=2&q=) and extract it into the demoinfogo folder. This creates the folder `demoinfogp/protobuf-2.5.0`.
+3. Download the protocol buffer compiler `protoc-2.5.0.zip` (http://code.google.com/p/protobuf/downloads/detail?name=protoc-2.5.0-win32.zip&can=2&q=) and extract it into the `demoinfogo/protoc-2.5.0-win32` folder that was created when you extracted `demoinfogo.zip`.
+4. Open `demoinfogo/protobuf-2.5.0/vsprojects/protobuf.sln` in Microsoft Visual Studio 2010. Allow Visual Studio to convert projects. Once loaded, build the `Release` configuration of `libprotobuf`. Building any other projects is not required.
+5. Open the project `demoinfogo/demoinfogo.vcxproj` in Microsoft Visual Studio 2010. Building the `Release` configuration creates the binary `demoinfogo/demoinfogo.exe`
 
 
 Working with Network Messages
@@ -30,12 +30,13 @@ Building demoinfogo generates C++ classes from the network protobuf files. Follo
 
 You can now use the generated classes in your C++ code to send user messages. Here is an example of how to send the HintText message
 
+```cpp
 CSingleUserRecipientFilter filter( this );
 filter.MakeReliable();
 CCSUsrMsg_HintText msg;
 msg.set_text( "ExampleHint" );
 SendUserMessage( filter, CS_UM_HintText, msg );
-
+```
 
 ====== Copyright (c) 2014, Valve Corporation, All rights reserved. ========
 

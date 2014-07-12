@@ -11,7 +11,7 @@
 #endif
 
 #include <string>
-#include <crtdefs.h>
+#include <stdint.h>
 
 #define DEMO_HEADER_ID		"HL2DEMO"
 #define DEMO_PROTOCOL		4
@@ -20,8 +20,8 @@
 #define	MAX_OSPATH		260			// max length of a filesystem pathname
 #endif
 
-typedef __int32			 	int32;
-typedef unsigned __int32	uint32;
+typedef int32_t	 	int32;
+typedef uint32_t	uint32;
 
 // Demo messages
 enum

@@ -11,10 +11,13 @@ The repo contains the source code required to build this tool on linux. The sour
 Building demoinfogo
 ------------------
 
+- On Debian/Ubuntu, install the essential build tools: `sudo apt-get install build-essential`
+- On 64-bit systems, you'll install also need g++ multilib: `sudo apt-get install g++-multilib`
+
 In order to build demoinfogo on Linux, follow these steps
 
 1. Run `make protobuf` to download [protobuf 2.5.0](https://protobuf.googlecode.com/files/protobuf-2.5.0.tar.gz), extract it to the root of this repo, then configure and compile it.
-2. Run `make`
+2. Run `make` to compile and create `demoinfogo`
 
 Working with Network Messages
 -----------------------------

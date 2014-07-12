@@ -23,7 +23,6 @@
 //===========================================================================//
 
 #include <stdarg.h>
-#include <conio.h>
 #include "demofile.h"
 #include "demofiledump.h"
 
@@ -384,14 +383,6 @@ void CDemoFileDump::DoDump()
 			{
 			}
 			break;
-		}
-
-		if( _kbhit() )
-		{
-			int ch = toupper( _getch() );
-
-			if( ch == 'Q' )
-				break;
 		}
 	}
 }

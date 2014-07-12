@@ -1,4 +1,5 @@
 CPP := g++
+CPP_OSX := clang++
 TARGET := demoinfogo
 OBJECTS := src/demofile.cpp src/demofiledump.cpp src/demoinfogo.cpp
 PROTO_OBJECTS := src/generated_proto/netmessages_public.pb.cc src/generated_proto/cstrike15_usermessages_public.pb.cc
@@ -8,11 +9,19 @@ PROTOBUF_SRC := $(PROTOBUF_DIR)/src
 PROTOBUF_LIB := $(PROTOBUF_DIR)/src/.libs
 
 INCLUDE := -I$(PROTOBUF_SRC)
+OS := $(shell uname -s)
 ARCH := $(shell getconf LONG_BIT)
 CPP_FLAGS_32 := -m32
 CPP_FLAGS_64 := -m64
 CPP_FLAGS := $(CPP_FLAGS_$(ARCH)) -pthread -Wall
-LD_FLAGS := -L$(PROTOBUF_LIB) -static -lprotobuf
+
+ifneq "$(OS)" "Darwin"
+	LD_FLAGS := -static
+else
+	CPP = $(CPP_OSX)
+endif
+
+LD_FLAGS += -L$(PROTOBUF_LIB) -lprotobuf
 
 default: all
 

@@ -14,7 +14,7 @@ Building demoinfogo
 - On Debian/Ubuntu, install the essential build tools: `sudo apt-get install build-essential`
 - On 64-bit systems, you'll install also need g++ multilib: `sudo apt-get install g++-multilib`
 
-In order to build demoinfogo on Linux, follow these steps
+In order to build demoinfogo on Linux, follow these steps:
 
 1. Run `make protobuf` to download [protobuf 2.5.0](https://protobuf.googlecode.com/files/protobuf-2.5.0.tar.gz), extract it to the root of this repo, then configure and compile it.
 2. Run `make` to compile and create `demoinfogo`
@@ -22,7 +22,8 @@ In order to build demoinfogo on Linux, follow these steps
 Working with Network Messages
 -----------------------------
 
-Building demoinfogo generates C++ classes from the network protobuf files. Follow these steps to generate these files for use in your application without building demoinfogo
+Building demoinfogo generates C++ classes from the network protobuf files. Follow these steps to generate these files for use in your application without building demoinfogo:
+
 1. Follow the instructions above for downloading and compiling protobuf 2.5.0 from source.
 2. Run `make generated_proto`. The generated C++ files are created in subdirectory named `src/generated_proto`.
 

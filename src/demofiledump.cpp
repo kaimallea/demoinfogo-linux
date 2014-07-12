@@ -22,6 +22,8 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //===========================================================================//
 
+#define __STDC_FORMAT_MACROS
+#include <inttypes.h>
 #include <stdarg.h>
 #include "demofile.h"
 #include "demofiledump.h"
@@ -226,7 +228,7 @@ void PrintNetMessage< CSVCMsg_GameEvent, svc_GameEvent >( CDemoFileDump& Demo, c
 				if( KeyValue.has_val_bool() )
 					printf( "%d ", KeyValue.val_bool() );
 				if( KeyValue.has_val_uint64() )
-					printf( "%ld ", KeyValue.val_uint64() );
+					printf( "%"PRIu64, KeyValue.val_uint64() );
 
 				printf( "\n" );
 			}

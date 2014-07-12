@@ -5,6 +5,7 @@
 //=============================================================================//
 
 #include <stdio.h>
+#include <string.h>
 #include <assert.h>
 #include "demofile.h"
 
@@ -141,7 +142,7 @@ bool CDemoFile::Open( const char *name )
 	Close();
 
 	FILE *fp = NULL;
-	fopen_s(&fp, name, "rb" );
+	fp = fopen(name, "rb" );
 	if( fp )
 	{
 		size_t Length;
@@ -162,7 +163,7 @@ bool CDemoFile::Open( const char *name )
 
 		if ( strcmp ( m_DemoHeader.demofilestamp, DEMO_HEADER_ID ) )
 		{
-			fprintf( stderr, "CDemoFile::Open: %s has invalid demo header ID.\n", m_szFileName );
+			fprintf( stderr, "CDemoFile::Open: %s has invalid demo header ID.\n", m_szFileName.c_str() );
 			fclose( fp );
 			return false;
 		}

@@ -23,7 +23,6 @@
 //===========================================================================//
 
 #include <stdarg.h>
-#include <conio.h>
 #include "demofile.h"
 #include "demofiledump.h"
 
@@ -35,13 +34,13 @@
 #include "generated_proto/netmessages_public.pb.h"
 
 
-__declspec( noreturn ) void fatal_errorf( const char* fmt, ... )
+__attribute__ (( noreturn )) void fatal_errorf( const char* fmt, ... )
 {
     va_list  vlist;
     char buf[ 1024 ];
 
     va_start( vlist, fmt);
-    vsnprintf_s( buf, sizeof( buf ), fmt, vlist );
+    vsnprintf( buf, sizeof( buf ), fmt, vlist );
 	buf[ sizeof( buf ) - 1 ] = 0;
     va_end( vlist );
 
@@ -197,7 +196,7 @@ void PrintNetMessage< CSVCMsg_GameEvent, svc_GameEvent >( CDemoFileDump& Demo, c
 
 		if( iDescriptor == Demo.m_GameEventList.descriptors().size() )
 		{
-			printf( "%s", msg.DebugString() );
+			printf( "%s", msg.DebugString().c_str() );
 		}
 		else
 		{
@@ -384,14 +383,6 @@ void CDemoFileDump::DoDump()
 			{
 			}
 			break;
-		}
-
-		if( _kbhit() )
-		{
-			int ch = toupper( _getch() );
-
-			if( ch == 'Q' )
-				break;
 		}
 	}
 }

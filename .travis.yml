@@ -1,0 +1,5 @@
+language: cpp
+compiler: gcc
+before_install:
+    - make get_protobuf
+script: make

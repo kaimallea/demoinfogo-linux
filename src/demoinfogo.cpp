@@ -21,12 +21,11 @@
 // ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF 
 // THE POSSIBILITY OF SUCH DAMAGE.
 //===========================================================================//
-#define __cdecl __attribute__((__cdecl__))
 
 #include <stdio.h>
 #include "demofiledump.h"
 
-int __cdecl main( int argc, char *argv[] )
+int main( int argc, char *argv[] )
 {
 	CDemoFileDump DemoFileDump;
 

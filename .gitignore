@@ -1,6 +1,6 @@
 .vagrant
 demoinfogo
-generated_proto/
+src/generated_proto/
 protobuf-2.5.0/Makefile
 protobuf-2.5.0/config.h
 protobuf-2.5.0/config.log

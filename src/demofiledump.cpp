@@ -226,7 +226,7 @@ void PrintNetMessage< CSVCMsg_GameEvent, svc_GameEvent >( CDemoFileDump& Demo, c
 				if( KeyValue.has_val_bool() )
 					printf( "%d ", KeyValue.val_bool() );
 				if( KeyValue.has_val_uint64() )
-					printf( "%lld ", KeyValue.val_uint64() );
+					printf( "%ld ", KeyValue.val_uint64() );
 
 				printf( "\n" );
 			}

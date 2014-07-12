@@ -6,9 +6,6 @@
 
 #ifndef TOOLDEMOFILE_H
 #define TOOLDEMOFILE_H
-#ifdef _WIN32
-#pragma once
-#endif
 
 #include <string>
 #include <stdint.h>

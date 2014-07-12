@@ -142,7 +142,7 @@ bool CDemoFile::Open( const char *name )
 	Close();
 
 	FILE *fp = NULL;
-	fopen_s(&fp, name, "rb" );
+	fp = fopen(name, "rb" );
 	if( fp )
 	{
 		size_t Length;

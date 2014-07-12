@@ -25,6 +25,7 @@
 #ifndef DEMOFILEDUMP_H
 #define DEMOFILEDUMP_H
 
+#include <stdio.h>
 #include "demofile.h"
 
 #include "generated_proto/netmessages_public.pb.h"

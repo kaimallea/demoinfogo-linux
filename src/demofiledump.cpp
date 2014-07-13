@@ -63,8 +63,14 @@ bool CDemoFileDump::Open( const char *filename )
 
 void CDemoFileDump::MsgPrintf( const ::google::protobuf::Message& msg, int size, const char *fmt, ... )
 {
+	extern bool eventsOnly;
+
 	va_list vlist;
 	const std::string& TypeName = msg.GetTypeName();
+
+	if (eventsOnly && (TypeName.find("vent") == std::string::npos)) {
+		return;
+	}
 
 	// Print the message type and size
 	printf( "---- %s (%d bytes) -----------------\n", TypeName.c_str(), size );

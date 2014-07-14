@@ -25,6 +25,11 @@
 #define __STDC_FORMAT_MACROS
 #include <inttypes.h>
 #include <stdarg.h>
+#include <rapidjson/document.h>
+#include <rapidjson/allocators.h>
+#include <rapidjson/filestream.h>
+#include <rapidjson/prettywriter.h>
+#include <rapidjson/writer.h>
 #include "demofile.h"
 #include "demofiledump.h"
 
@@ -35,6 +40,8 @@
 #include "generated_proto/cstrike15_usermessages_public.pb.h"
 #include "generated_proto/netmessages_public.pb.h"
 
+rapidjson::FileStream g_JSONFileStream(stdout);
+rapidjson::PrettyWriter<rapidjson::FileStream> g_JSONWriter(g_JSONFileStream);
 
 __attribute__ (( noreturn )) void fatal_errorf( const char* fmt, ... )
 {
@@ -66,12 +73,19 @@ void CDemoFileDump::MsgPrintf( const ::google::protobuf::Message& msg, int size,
 	va_list vlist;
 	const std::string& TypeName = msg.GetTypeName();
 
+	g_JSONWriter.StartObject();
 	// Print the message type and size
-	printf( "---- %s (%d bytes) -----------------\n", TypeName.c_str(), size );
+	//printf( "---- %s (%d bytes) -----------------\n", TypeName.c_str(), size );
+
+	g_JSONWriter.String("name");
+	g_JSONWriter.String(TypeName.c_str());
+	g_JSONWriter.String("data");
 
 	va_start( vlist, fmt);
 	vprintf( fmt, vlist );
 	va_end( vlist );
+
+    g_JSONWriter.EndObject();
 }
 
 template < class T, int msgType >
@@ -180,6 +194,115 @@ void PrintNetMessage< CSVCMsg_UserMessage, svc_UserMessage >( CDemoFileDump& Dem
 }
 
 template <>
+void PrintNetMessage< CSVCMsg_ServerInfo, svc_ServerInfo >( CDemoFileDump& Demo, const void *parseBuffer, int BufferSize )
+{
+	CSVCMsg_ServerInfo msg;
+
+	g_JSONWriter.StartObject();
+	g_JSONWriter.String("name");
+	g_JSONWriter.String("CSVCMsg_ServerInfo");
+	g_JSONWriter.String("data");
+
+	g_JSONWriter.StartObject();
+
+	g_JSONWriter.String("protocol");
+	g_JSONWriter.Int(msg.protocol());
+
+	g_JSONWriter.String("server_count");
+	g_JSONWriter.Int(msg.server_count());
+
+	g_JSONWriter.String("is_dedicated");
+	g_JSONWriter.Bool(msg.is_dedicated());
+
+	g_JSONWriter.String("is_official_valuve_server");
+	g_JSONWriter.Bool(msg.is_official_valve_server());
+
+	g_JSONWriter.String("is_hltv");
+	g_JSONWriter.Bool(msg.is_hltv());
+
+	g_JSONWriter.String("is_replay");
+	g_JSONWriter.Bool(msg.is_replay());
+
+	g_JSONWriter.String("is_redirecting_to_proxy_relay");
+	g_JSONWriter.Bool(msg.is_redirecting_to_proxy_relay());
+
+	g_JSONWriter.String("c_os");
+	g_JSONWriter.Int(msg.c_os());
+
+	g_JSONWriter.String("map_crc");
+	g_JSONWriter.Double(double(msg.map_crc()));
+
+	g_JSONWriter.String("client_crc");
+	g_JSONWriter.Double(double(msg.client_crc()));
+
+	g_JSONWriter.String("string_table_crc");
+	g_JSONWriter.Double(double(msg.string_table_crc()));
+
+	g_JSONWriter.String("max_clients");
+	g_JSONWriter.Int(msg.max_clients());
+
+	g_JSONWriter.String("max_classes");
+	g_JSONWriter.Int(msg.max_classes());
+
+	g_JSONWriter.String("player_slot");
+	g_JSONWriter.Int(msg.player_slot());
+
+	g_JSONWriter.String("tick_interval");
+	g_JSONWriter.Double(double(msg.tick_interval()));
+
+	g_JSONWriter.String("game_dir");
+	g_JSONWriter.String(msg.game_dir().c_str());
+
+	g_JSONWriter.String("map_name");
+	g_JSONWriter.String(msg.map_name().c_str());
+
+	g_JSONWriter.String("map_group_name");
+	g_JSONWriter.String(msg.map_group_name().c_str());
+
+	g_JSONWriter.String("sky_name");
+	g_JSONWriter.String(msg.sky_name().c_str());
+
+	g_JSONWriter.String("host_name");
+	g_JSONWriter.String(msg.host_name().c_str());
+
+	g_JSONWriter.String("ugc_map_id");
+	g_JSONWriter.Uint64(msg.ugc_map_id());
+
+	g_JSONWriter.EndObject();
+
+	g_JSONWriter.EndObject(); // server_info
+}
+
+template <>
+void PrintNetMessage< CNETMsg_Tick, net_Tick >( CDemoFileDump& Demo, const void *parseBuffer, int BufferSize )
+{
+	CNETMsg_Tick msg;
+
+	g_JSONWriter.StartObject();
+	g_JSONWriter.String("name");
+	g_JSONWriter.String("CSVCMsg_Tick");
+	g_JSONWriter.String("data");
+
+	g_JSONWriter.StartObject();
+
+	g_JSONWriter.String("tick");
+	g_JSONWriter.Uint(msg.tick());
+
+	g_JSONWriter.String("host_computationtime");
+	g_JSONWriter.Uint(msg.host_computationtime());
+
+	g_JSONWriter.String("host_computationtime_std_deviation");
+	g_JSONWriter.Uint(msg.host_computationtime_std_deviation());
+
+	g_JSONWriter.String("host_framestarttime_std_deviation");
+	g_JSONWriter.Uint(msg.host_framestarttime_std_deviation());
+
+	g_JSONWriter.EndObject();
+
+	g_JSONWriter.EndObject();
+}
+
+template <>
 void PrintNetMessage< CSVCMsg_GameEvent, svc_GameEvent >( CDemoFileDump& Demo, const void *parseBuffer, int BufferSize )
 {
 	CSVCMsg_GameEvent msg;
@@ -205,33 +328,49 @@ void PrintNetMessage< CSVCMsg_GameEvent, svc_GameEvent >( CDemoFileDump& Demo, c
 			int numKeys = msg.keys().size();
 			const CSVCMsg_GameEventList::descriptor_t& Descriptor = Demo.m_GameEventList.descriptors( iDescriptor );
 
-			printf( "%s eventid:%d %s\n", Descriptor.name().c_str(), msg.eventid(),
-				msg.has_event_name() ? msg.event_name().c_str() : "" );
+			g_JSONWriter.StartObject();
+			g_JSONWriter.String("event_name");
+			g_JSONWriter.String(msg.has_event_name() ? msg.event_name().c_str() : Descriptor.name().c_str());
+			g_JSONWriter.String("event_id");
+			g_JSONWriter.Uint(msg.eventid());
+
+			//printf( "%s eventid:%d %s\n", Descriptor.name().c_str(), msg.eventid(),
+			//	msg.has_event_name() ? msg.event_name().c_str() : "" );
 
 			for( int i = 0; i < numKeys; i++ )
 			{
 				const CSVCMsg_GameEventList::key_t& Key = Descriptor.keys( i );
 				const CSVCMsg_GameEvent::key_t& KeyValue = msg.keys( i );
 
-				printf(" %s: ", Key.name().c_str() );
+				g_JSONWriter.String(Key.name().c_str());
+				//printf(" %s: ", Key.name().c_str() );
 
 				if( KeyValue.has_val_string() )
-					printf( "%s ", KeyValue.val_string().c_str() );
+					g_JSONWriter.String(KeyValue.val_string().c_str());
+					//printf( "%s ", KeyValue.val_string().c_str() );
 				if( KeyValue.has_val_float() )
-					printf( "%f ", KeyValue.val_float() );
+					g_JSONWriter.Double(double(KeyValue.val_float()));
+					//printf( "%f ", KeyValue.val_float() );
 				if( KeyValue.has_val_long() )
-					printf( "%d ", KeyValue.val_long() );
+					g_JSONWriter.Int(KeyValue.val_long());
+					//printf( "%d ", KeyValue.val_long() );
 				if( KeyValue.has_val_short() )
-					printf( "%d ", KeyValue.val_short() );
+					g_JSONWriter.Int(KeyValue.val_short());
+					//printf( "%d ", KeyValue.val_short() );
 				if( KeyValue.has_val_byte() )
-					printf( "%d ", KeyValue.val_byte() );
+					g_JSONWriter.Int(KeyValue.val_byte());
+					//printf( "%d ", KeyValue.val_byte() );
 				if( KeyValue.has_val_bool() )
-					printf( "%d ", KeyValue.val_bool() );
+					g_JSONWriter.Bool(KeyValue.val_bool());
+					//printf( "%d ", KeyValue.val_bool() );
 				if( KeyValue.has_val_uint64() )
-					printf( "%"PRIu64, KeyValue.val_uint64() );
+					g_JSONWriter.Uint64(KeyValue.val_uint64());
+					//printf( "%"PRIu64, KeyValue.val_uint64() );
 
-				printf( "\n" );
+				//printf( "\n" );
 			}
+
+			g_JSONWriter.EndObject();
 		}
 	}
 }
@@ -335,6 +474,9 @@ void CDemoFileDump::HandleDemoPacket()
 void CDemoFileDump::DoDump()
 {
 	bool demofinished = false;
+
+	printf("{[\n");
+
 	while ( !demofinished )
 	{
 		int				tick = 0;
@@ -387,5 +529,7 @@ void CDemoFileDump::DoDump()
 			break;
 		}
 	}
+
+	printf("\n]}");
 }
 

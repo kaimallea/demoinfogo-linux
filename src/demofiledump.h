@@ -48,7 +48,7 @@ public:
 
 public:
 	CDemoFile m_demofile;
-	CSVCMsg_ServerInfo m_ServerInfo;
+	CMsg_CVars m_CVars;
 	CSVCMsg_GameEventList m_GameEventList;
 
 	int m_nFrameNumber;

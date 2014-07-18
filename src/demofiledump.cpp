@@ -996,7 +996,7 @@ void PrintNetMessage< CSVCMsg_BSPDecal, svc_BSPDecal >( CDemoFileDump& Demo, con
 template <>
 void PrintNetMessage< CSVCMsg_UserMessage, svc_UserMessage >( CDemoFileDump& Demo, const void *parseBuffer, int BufferSize )
 {
-	Demo.DumpUserMessage( parseBuffer, BufferSize );
+	//Demo.DumpUserMessage( parseBuffer, BufferSize );
 }
 
 /* svc_GameEvent */

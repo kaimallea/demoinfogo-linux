@@ -816,49 +816,50 @@ void PrintNetMessage< CSVCMsg_Sounds, svc_Sounds >( CDemoFileDump& Demo, const v
 		g_JSONWriter.String("reliable_sound");
 		g_JSONWriter.Bool(msg.reliable_sound());
 
-        //g_JSONWriter.StartArray();
+        g_JSONWriter.String("sounds");
+        g_JSONWriter.StartArray();
 
-        //int iSounds;
-        //for( iSounds = 0; iSounds < msg.sounds().size(); iSounds++ )
-        //{
-        //    g_JSONWriter.StartObject();
-        //        //g_JSONWriter.String("origin_x");
-        //        //g_JSONWriter.Int(msg.sounds( iSounds ).origin_x());
-        //        //g_JSONWriter.String("origin_y");
-        //        //g_JSONWriter.Int(msg.sounds( iSounds ).origin_y());
-        //        //g_JSONWriter.String("origin_z");
-        //        //g_JSONWriter.Int(msg.sounds( iSounds ).origin_z());
-        //        //g_JSONWriter.String("volume");
-        //        //g_JSONWriter.Uint(msg.sounds( iSounds ).volume());
-        //        //g_JSONWriter.String("delay_value");
-        //        //g_JSONWriter.Double(msg.sounds( iSounds ).delay_value());
-        //        //g_JSONWriter.String("sequence_number");
-        //        //g_JSONWriter.Int(msg.sounds( iSounds ).sequence_number());
-        //        //g_JSONWriter.String("entity_index");
-        //        //g_JSONWriter.Int(msg.sounds( iSounds ).entity_index());
-        //        //g_JSONWriter.String("channel");
-        //        //g_JSONWriter.Int(msg.sounds( iSounds ).channel());
-        //        //g_JSONWriter.String("pitch");
-        //        //g_JSONWriter.Int(msg.sounds( iSounds ).pitch());
-        //        //g_JSONWriter.String("flags");
-        //        //g_JSONWriter.Int(msg.sounds( iSounds ).flags());
-        //        //g_JSONWriter.String("sound_num");
-        //        //g_JSONWriter.Uint(msg.sounds( iSounds ).sound_num());
-        //        //g_JSONWriter.String("sound_num_handle");
-        //        //g_JSONWriter.Int(msg.sounds( iSounds ).sound_num_handle());
-        //        //g_JSONWriter.String("speaker_entity");
-        //        //g_JSONWriter.Int(msg.sounds( iSounds ).speaker_entity());
-        //        //g_JSONWriter.String("random_seed");
-        //        //g_JSONWriter.Int(msg.sounds( iSounds ).random_seed());
-        //        //g_JSONWriter.String("sound_level");
-        //        //g_JSONWriter.Int(msg.sounds( iSounds ).sound_level());
-        //        //g_JSONWriter.String("is_sentence");
-        //        //g_JSONWriter.Bool(msg.sounds( iSounds ).is_sentence());
-        //        //g_JSONWriter.String("is_ambient");
-        //        //g_JSONWriter.Bool(msg.sounds( iSounds ).is_ambient());
-        //    g_JSONWriter.EndObject();
-        //}
-        //g_JSONWriter.EndArray();
+        int iSounds;
+        for( iSounds = 0; iSounds < msg.sounds().size(); iSounds++ )
+        {
+            g_JSONWriter.StartObject();
+                g_JSONWriter.String("origin_x");
+                g_JSONWriter.Int(msg.sounds( iSounds ).origin_x());
+                g_JSONWriter.String("origin_y");
+                g_JSONWriter.Int(msg.sounds( iSounds ).origin_y());
+                g_JSONWriter.String("origin_z");
+                g_JSONWriter.Int(msg.sounds( iSounds ).origin_z());
+                g_JSONWriter.String("volume");
+                g_JSONWriter.Uint(msg.sounds( iSounds ).volume());
+                g_JSONWriter.String("delay_value");
+                g_JSONWriter.Double(msg.sounds( iSounds ).delay_value());
+                g_JSONWriter.String("sequence_number");
+                g_JSONWriter.Int(msg.sounds( iSounds ).sequence_number());
+                g_JSONWriter.String("entity_index");
+                g_JSONWriter.Int(msg.sounds( iSounds ).entity_index());
+                g_JSONWriter.String("channel");
+                g_JSONWriter.Int(msg.sounds( iSounds ).channel());
+                g_JSONWriter.String("pitch");
+                g_JSONWriter.Int(msg.sounds( iSounds ).pitch());
+                g_JSONWriter.String("flags");
+                g_JSONWriter.Int(msg.sounds( iSounds ).flags());
+                g_JSONWriter.String("sound_num");
+                g_JSONWriter.Uint(msg.sounds( iSounds ).sound_num());
+                g_JSONWriter.String("sound_num_handle");
+                g_JSONWriter.Int(msg.sounds( iSounds ).sound_num_handle());
+                g_JSONWriter.String("speaker_entity");
+                g_JSONWriter.Int(msg.sounds( iSounds ).speaker_entity());
+                g_JSONWriter.String("random_seed");
+                g_JSONWriter.Int(msg.sounds( iSounds ).random_seed());
+                g_JSONWriter.String("sound_level");
+                g_JSONWriter.Int(msg.sounds( iSounds ).sound_level());
+                g_JSONWriter.String("is_sentence");
+                g_JSONWriter.Bool(msg.sounds( iSounds ).is_sentence());
+                g_JSONWriter.String("is_ambient");
+                g_JSONWriter.Bool(msg.sounds( iSounds ).is_ambient());
+            g_JSONWriter.EndObject();
+        }
+        g_JSONWriter.EndArray();
 
 		g_JSONWriter.EndObject();
 

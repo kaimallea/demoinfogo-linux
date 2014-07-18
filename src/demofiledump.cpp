@@ -177,11 +177,12 @@ void PrintNetMessage( CDemoFileDump& Demo, const void *parseBuffer, int BufferSi
 
 	if( msg.ParseFromArray( parseBuffer, BufferSize ) )
 	{
+/*
 		if( msgType == svc_GameEventList )
 		{
 			Demo.m_GameEventList.CopyFrom( msg );
 		}
-
+*/
 		Demo.MsgPrintf( msg, BufferSize, "%s", msg.DebugString().c_str() );
 	}
 }
@@ -1006,8 +1007,14 @@ void PrintNetMessage< CSVCMsg_GameEvent, svc_GameEvent >( CDemoFileDump& Demo, c
 
 	if( msg.ParseFromArray( parseBuffer, BufferSize ) )
 	{
-		int iDescriptor;
+        g_JSONWriter.StartObject();
 
+        g_JSONWriter.String("name");
+        g_JSONWriter.String("CSVCMsg_GameEvent");
+        g_JSONWriter.String("data");
+        g_JSONWriter.StartObject();
+
+		int iDescriptor;
 		for( iDescriptor = 0; iDescriptor < Demo.m_GameEventList.descriptors().size(); iDescriptor++ )
 		{
 			const CSVCMsg_GameEventList::descriptor_t& Descriptor = Demo.m_GameEventList.descriptors( iDescriptor );
@@ -1016,59 +1023,87 @@ void PrintNetMessage< CSVCMsg_GameEvent, svc_GameEvent >( CDemoFileDump& Demo, c
 				break;
 		}
 
-		if( iDescriptor == Demo.m_GameEventList.descriptors().size() )
-		{
-			printf( "%s", msg.DebugString().c_str() );
-		}
-		else
+		if( iDescriptor != Demo.m_GameEventList.descriptors().size() )
 		{
 			int numKeys = msg.keys().size();
 			const CSVCMsg_GameEventList::descriptor_t& Descriptor = Demo.m_GameEventList.descriptors( iDescriptor );
 
-			g_JSONWriter.StartObject();
 			g_JSONWriter.String("event_name");
 			g_JSONWriter.String(msg.has_event_name() ? msg.event_name().c_str() : Descriptor.name().c_str());
-			g_JSONWriter.String("event_id");
-			g_JSONWriter.Uint(msg.eventid());
-
-			//printf( "%s eventid:%d %s\n", Descriptor.name().c_str(), msg.eventid(),
-			//	msg.has_event_name() ? msg.event_name().c_str() : "" );
+			g_JSONWriter.String("eventid");
+			g_JSONWriter.Int(msg.eventid());
+            g_JSONWriter.String("keys");
+            g_JSONWriter.StartArray();
 
 			for( int i = 0; i < numKeys; i++ )
 			{
-				const CSVCMsg_GameEventList::key_t& Key = Descriptor.keys( i );
 				const CSVCMsg_GameEvent::key_t& KeyValue = msg.keys( i );
 
-				g_JSONWriter.String(Key.name().c_str());
-				//printf(" %s: ", Key.name().c_str() );
+				g_JSONWriter.StartObject();
+
+                if( KeyValue.has_val_string() )
+                {
+                    g_JSONWriter.String("val_string");
+                    g_JSONWriter.String(KeyValue.val_string().c_str());
+                }
 
 				if( KeyValue.has_val_string() )
+                {
+                    g_JSONWriter.String("val_string");
 					g_JSONWriter.String(KeyValue.val_string().c_str());
-					//printf( "%s ", KeyValue.val_string().c_str() );
-				if( KeyValue.has_val_float() )
-					g_JSONWriter.Double(double(KeyValue.val_float()));
-					//printf( "%f ", KeyValue.val_float() );
-				if( KeyValue.has_val_long() )
-					g_JSONWriter.Int(KeyValue.val_long());
-					//printf( "%d ", KeyValue.val_long() );
-				if( KeyValue.has_val_short() )
-					g_JSONWriter.Int(KeyValue.val_short());
-					//printf( "%d ", KeyValue.val_short() );
-				if( KeyValue.has_val_byte() )
-					g_JSONWriter.Int(KeyValue.val_byte());
-					//printf( "%d ", KeyValue.val_byte() );
-				if( KeyValue.has_val_bool() )
-					g_JSONWriter.Bool(KeyValue.val_bool());
-					//printf( "%d ", KeyValue.val_bool() );
-				if( KeyValue.has_val_uint64() )
-					g_JSONWriter.Uint64(KeyValue.val_uint64());
-					//printf( "%"PRIu64, KeyValue.val_uint64() );
+                }
 
-				//printf( "\n" );
+				if( KeyValue.has_val_float() )
+                {
+                    g_JSONWriter.String("val_float");
+					g_JSONWriter.Double(double(KeyValue.val_float()));
+                }
+
+				if( KeyValue.has_val_long() )
+                {
+                    g_JSONWriter.String("val_long");
+					g_JSONWriter.Int(KeyValue.val_long());
+                }
+
+				if( KeyValue.has_val_short() )
+                {
+                    g_JSONWriter.String("val_short");
+					g_JSONWriter.Int(KeyValue.val_short());
+                }
+
+				if( KeyValue.has_val_byte() )
+                {
+                    g_JSONWriter.String("val_byte");
+					g_JSONWriter.Int(KeyValue.val_byte());
+                }
+
+				if( KeyValue.has_val_bool() )
+                {
+                    g_JSONWriter.String("val_bool");
+					g_JSONWriter.Bool(KeyValue.val_bool());
+                }
+
+				if( KeyValue.has_val_uint64() )
+                {
+                    g_JSONWriter.String("val_uint64");
+					g_JSONWriter.Uint64(KeyValue.val_uint64());
+                }
+
+                if( KeyValue.has_val_uint64() )
+                {
+                    g_JSONWriter.String("val_wstring");
+                    g_JSONWriter.String(KeyValue.val_wstring().c_str());
+                }
+
+                g_JSONWriter.EndObject();
 			}
 
-			g_JSONWriter.EndObject();
+
+            g_JSONWriter.EndArray();
 		}
+
+        g_JSONWriter.EndObject();
+        g_JSONWriter.EndObject();
 	}
 }
 
@@ -1191,6 +1226,7 @@ void PrintNetMessage< CSVCMsg_GameEventList, svc_GameEventList >( CDemoFileDump&
 
     if( msg.ParseFromArray( parseBuffer, BufferSize ) )
     {
+        Demo.m_GameEventList.CopyFrom( msg );
 
         g_JSONWriter.StartObject();
 
@@ -1359,7 +1395,9 @@ void CDemoFileDump::DoDump()
 {
 	bool demofinished = false;
 
-	printf("{[\n");
+	g_JSONWriter.StartObject();
+    g_JSONWriter.String("demoinfogo");
+    g_JSONWriter.StartArray();
 
 	while ( !demofinished )
 	{
@@ -1414,5 +1452,7 @@ void CDemoFileDump::DoDump()
 		}
 	}
 
-	printf("\n]}");
+    g_JSONWriter.EndArray();
+    g_JSONWriter.EndObject();
+
 }

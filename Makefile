@@ -14,7 +14,7 @@ INCLUDE := -I$(JSON_LIB) -I$(PROTOBUF_SRC)
 OS := $(shell uname -s)
 ARCH := $(shell getconf LONG_BIT)
 CPP_FLAGS_32 := -m32
-CPP_FLAGS_64 := -m64
+CPP_FLAGS_64 := -m64 -fpermissive
 CPP_FLAGS := $(CPP_FLAGS_$(ARCH)) -pthread -Wall
 
 ifneq "$(OS)" "Darwin"

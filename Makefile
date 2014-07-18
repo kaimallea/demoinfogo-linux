@@ -8,11 +8,13 @@ PROTOBUF_DIR := protobuf-2.5.0
 PROTOBUF_SRC := $(PROTOBUF_DIR)/src
 PROTOBUF_LIB := $(PROTOBUF_DIR)/src/.libs
 
-INCLUDE := -I$(PROTOBUF_SRC)
+JSON_LIB := rapidjson/include
+
+INCLUDE := -I$(JSON_LIB) -I$(PROTOBUF_SRC)
 OS := $(shell uname -s)
 ARCH := $(shell getconf LONG_BIT)
 CPP_FLAGS_32 := -m32
-CPP_FLAGS_64 := -m64
+CPP_FLAGS_64 := -m64 -fpermissive
 CPP_FLAGS := $(CPP_FLAGS_$(ARCH)) -pthread -Wall
 
 ifneq "$(OS)" "Darwin"

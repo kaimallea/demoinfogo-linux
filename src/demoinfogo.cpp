@@ -25,17 +25,39 @@
 #include <stdio.h>
 #include "demofiledump.h"
 
+bool eventsOnly = false;
+
+void display_usage(const char *programName)
+{
+	printf("Usage: %s [options] filename.dem\n", programName);
+	printf("Options:\n");
+	printf("\t-e, --events-only\t\tOnly output game event info\n");
+	printf("\n");
+}
+
 int main( int argc, char *argv[] )
 {
 	CDemoFileDump DemoFileDump;
 
 	if( argc <= 1 )
 	{
-		printf( "demoinfo2 filename.dem\n" );
-		exit( 0 );
+		display_usage(argv[0]);
+		exit(1);
 	}
 
-	if( DemoFileDump.Open( argv[ 1 ] ) )
+	for (int i = 0; i < argc; i++) {
+		char *arg = argv[i];
+		if ((strcmp(arg, "-e") == 0) || (strcmp(arg, "--events-only") == 0)) {
+			if (i + 1 < argc) {
+				eventsOnly = true;
+			} else {
+				display_usage(argv[0]);
+				exit(1);
+			}
+		}
+	}
+
+	if( DemoFileDump.Open( argv[ argc-1 ] ) )
 	{
 		DemoFileDump.DoDump();
 	}

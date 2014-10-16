@@ -1,7 +1,7 @@
 CPP := g++
 CPP_OSX := clang++
 TARGET := demoinfogo
-OBJECTS := src/demofile.cpp src/demofiledump.cpp src/demoinfogo.cpp
+OBJECTS := src/demofile.cpp src/demofiledump.cpp src/demoinfogo.cpp src/demofilebitbuf.cpp src/demofilepropdecode.cpp
 PROTO_OBJECTS := src/generated_proto/netmessages_public.pb.cc src/generated_proto/cstrike15_usermessages_public.pb.cc
 
 PROTOBUF_DIR := protobuf-2.5.0
@@ -11,9 +11,7 @@ PROTOBUF_LIB := $(PROTOBUF_DIR)/src/.libs
 INCLUDE := -I$(PROTOBUF_SRC)
 OS := $(shell uname -s)
 ARCH := $(shell getconf LONG_BIT)
-CPP_FLAGS_32 := -m32
-CPP_FLAGS_64 := -m64
-CPP_FLAGS := $(CPP_FLAGS_$(ARCH)) -pthread -Wall
+CPP_FLAGS := -m32 -pthread -Wall -fpermissive --std=c++0x
 
 ifneq "$(OS)" "Darwin"
 	LD_FLAGS := -static
@@ -27,7 +25,7 @@ default: all
 
 get_protobuf:
 	curl https://protobuf.googlecode.com/files/protobuf-2.5.0.tar.gz | tar xvz
-	cd protobuf-2.5.0 ; ./configure ; make
+	cd protobuf-2.5.0 ; ./configure --build=i686-pc-linux-gnu CFLAGS="-m32 -DNDEBUG" CXXFLAGS="-m32 -DNDEBUG" LDFLAGS=-m32 ; make
 
 generated_proto:
 	mkdir -p src/generated_proto

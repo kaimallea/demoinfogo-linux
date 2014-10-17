@@ -624,9 +624,9 @@ void ParseStringTableUpdate( CBitRead &buf, int entries, int nMaxEntries, int us
 			{
 				int index = buf.ReadUBitLong( 5 );
 				int bytestocopy = buf.ReadUBitLong( SUBSTRING_BITS );
-				strncpy( entry, history[ index ].string, bytestocopy + 1 );
+				snprintf( entry, bytestocopy + 1, "%s", history[ index ].string );
 				buf.ReadString( substr, sizeof( substr ) );
-				strcat( entry, substr );
+				snprintf( entry, sizeof( entry ), "%s%s", entry, substr );
 			}
 			else
 			{
@@ -714,7 +714,7 @@ void ParseStringTableUpdate( CBitRead &buf, int entries, int nMaxEntries, int us
 		}
 
 		StringHistoryEntry she;
-		strncpy( she.string, pEntry, sizeof( she.string ) - 1 );
+		snprintf( she.string, sizeof( she.string ), "%s", pEntry );
 		history.push_back( she );
 	}
 }
@@ -734,7 +734,7 @@ void PrintNetMessage< CSVCMsg_CreateStringTable, svc_CreateStringTable >( CDemoF
 		CBitRead data( &msg.string_data()[ 0 ], msg.string_data().size() );
 		ParseStringTableUpdate( data,  msg.num_entries(), msg.max_entries(), msg.user_data_size(), msg.user_data_size_bits(), msg.user_data_fixed_size(), bIsUserInfo ); 
 
-		strcpy( s_StringTables[ s_nNumStringTables ].szName, msg.name().c_str() );
+		snprintf( s_StringTables[ s_nNumStringTables ].szName, sizeof( s_StringTables[ s_nNumStringTables ].szName ), "%s", msg.name().c_str() );
 		s_StringTables[ s_nNumStringTables ].nMaxEntries = msg.max_entries();
 		s_nNumStringTables++;
 	}

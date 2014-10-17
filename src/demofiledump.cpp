@@ -528,7 +528,7 @@ void ParseGameEvent( const CSVCMsg_GameEvent &msg, const CSVCMsg_GameEventList::
 							}
 							if ( KeyValue.has_val_uint64() )
 							{
-								printf( "%"  PRId64 " ", KeyValue.val_uint64() );
+								printf( "%"  PRIu64 " ", KeyValue.val_uint64() );
 							}
 							printf( "\n" );
 						}
@@ -694,7 +694,7 @@ void ParseStringTableUpdate( CBitRead &buf, int entries, int nMaxEntries, int us
 
 			if ( g_bDumpStringTables )
 			{
-				printf( "player info\n{\n %s:true\n xuid:%" PRId64"\n name:%s\n userID:%d\n guid:%s\n friendsID:%d\n friendsName:%s\n fakeplayer:%d\n ishltv:%d\n filesDownloaded:%d\n}\n",
+				printf( "player info\n{\n %s:true\n xuid:%" PRId64 "\n name:%s\n userID:%d\n guid:%s\n friendsID:%d\n friendsName:%s\n fakeplayer:%d\n ishltv:%d\n filesDownloaded:%d\n}\n",
 					bAdded ? "adding" : "updating", playerInfo.xuid, playerInfo.name, playerInfo.userID, playerInfo.guid, playerInfo.friendsID,
 					playerInfo.friendsName, playerInfo.fakeplayer, playerInfo.ishltv, playerInfo.filesDownloaded );
 			}
@@ -1547,7 +1547,7 @@ bool DumpStringTable( CBitRead &buf, bool bIsUserInfo )
 
 				if ( g_bDumpStringTables )
 				{
-					printf( "adding:player info:\n xuid:%"  PRId64"\n name:%s\n userID:%d\n guid:%s\n friendsID:%d\n friendsName:%s\n fakeplayer:%d\n ishltv:%d\n filesDownloaded:%d\n",
+					printf( "adding:player info:\n xuid:%" PRId64 "\n name:%s\n userID:%d\n guid:%s\n friendsID:%d\n friendsName:%s\n fakeplayer:%d\n ishltv:%d\n filesDownloaded:%d\n",
 						playerInfo.xuid, playerInfo.name, playerInfo.userID, playerInfo.guid, playerInfo.friendsID,
 						playerInfo.friendsName, playerInfo.fakeplayer, playerInfo.ishltv, playerInfo.filesDownloaded );
 				}

@@ -118,7 +118,7 @@ struct Prop_t
 				break;
 			case DPT_Int64:
 				{
-					printf( "%" PRId64"\n", m_value.m_int64 );
+					printf( "%" PRIu64 "\n", m_value.m_int64 );
 				}
 				break;
 		}

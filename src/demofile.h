@@ -29,6 +29,8 @@
 #endif
 
 #include <string>
+
+#define __STDC_FORMAT_MACROS
 #include <inttypes.h>
 
 #define DEMO_HEADER_ID		"HL2DEMO"

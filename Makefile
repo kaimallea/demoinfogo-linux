@@ -11,7 +11,7 @@ PROTOBUF_LIB := $(PROTOBUF_DIR)/src/.libs
 INCLUDE := -I$(PROTOBUF_SRC)
 OS := $(shell uname -s)
 ARCH := $(shell getconf LONG_BIT)
-CPP_FLAGS := -m32 -pthread -Wall -fpermissive --std=c++0x
+CPP_FLAGS := -O3 -m32 -pthread -Wall -fpermissive --std=c++0x
 
 ifneq "$(OS)" "Darwin"
 	LD_FLAGS := -static

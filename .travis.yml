@@ -5,4 +5,5 @@ before_install:
     - sudo apt-get install g++-multilib
 install:
     - make get_protobuf
+    - make protobuf
 script: make

@@ -5,3 +5,4 @@ protobuf-2.5.0
 *.dem
 *.tar
 *.gz
+*.o

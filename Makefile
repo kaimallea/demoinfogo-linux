@@ -17,26 +17,30 @@ endif
 default: demoinfogo
 
 demoinfogo: src/demofile.o src/demofiledump.o src/demoinfogo.o src/demofilebitbuf.o src/demofilepropdecode.o src/generated_proto/netmessages_public.pb.cc src/generated_proto/cstrike15_usermessages_public.pb.cc
-	$(CC) $(INC) src/demofile.o src/demofiledump.o src/demoinfogo.o src/demofilebitbuf.o src/demofilepropdecode.o src/generated_proto/netmessages_public.pb.cc src/generated_proto/cstrike15_usermessages_public.pb.cc $(LDFLAGS) -o demoinfogo
+	$(CC) $(INC) $^ $(LDFLAGS) -o $@
 
 src/demofile.o: src/demofile.cpp
-	$(CC) $(CFLAGS) $(INC) -c src/demofile.cpp -o src/demofile.o
+	$(CC) $(CFLAGS) $(INC) -c $< -o $@
 
-src/demofiledump.o: src/demofiledump.cpp generated_proto
-	$(CC) $(CFLAGS) $(INC) -c src/demofiledump.cpp -o src/demofiledump.o
+src/demofiledump.o: src/demofiledump.cpp src/generated_proto/netmessages_public.pb.cc src/generated_proto/cstrike15_usermessages_public.pb.cc
+	$(CC) $(CFLAGS) $(INC) -c $< -o $@
 
 src/demoinfogo.o: src/demoinfogo.cpp
-	$(CC) $(CFLAGS) $(INC) -c src/demoinfogo.cpp -o src/demoinfogo.o
+	$(CC) $(CFLAGS) $(INC) -c $< -o $@
 
 src/demofilebitbuf.o: src/demofilebitbuf.cpp
-	$(CC) $(CFLAGS) $(INC) -c src/demofilebitbuf.cpp -o src/demofilebitbuf.o
+	$(CC) $(CFLAGS) $(INC) -c $< -o $@
 
 src/demofilepropdecode.o: src/demofilepropdecode.cpp
-	$(CC) $(CFLAGS) $(INC) -c src/demofilepropdecode.cpp -o src/demofilepropdecode.o
+	$(CC) $(CFLAGS) $(INC) -c $< -o $@
 
-generated_proto: src/netmessages_public.proto src/cstrike15_usermessages_public.proto
+src/generated_proto/netmessages_public.pb.cc: src/netmessages_public.proto
 	mkdir -p src/generated_proto
-	$(PROTOBUF_SRC)/protoc --proto_path=./src --proto_path=$(PROTOBUF_SRC) --cpp_out=./src/generated_proto ./src/*.proto
+	$(PROTOBUF_SRC)/protoc --proto_path=./src --proto_path=$(PROTOBUF_SRC) --cpp_out=./src/generated_proto $<
+
+src/generated_proto/cstrike15_usermessages_public.pb.cc: src/cstrike15_usermessages_public.proto
+	mkdir -p src/generated_proto
+	$(PROTOBUF_SRC)/protoc --proto_path=./src --proto_path=$(PROTOBUF_SRC) --cpp_out=./src/generated_proto $<
 
 .PHONY: clean generated_proto protobuf
 

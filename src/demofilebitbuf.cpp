@@ -270,7 +270,9 @@ bool CBitRead::Seek( int nPosition )
 void CBitRead::StartReading( const void *pData, int nBytes, int iStartBit, int nBits )
 {
 // Make sure it's dword aligned and padded.
+#ifndef __APPLE__
 	assert( ( ( unsigned long )pData & 3 ) == 0 );
+#endif
 	m_pData = ( uint32 * ) pData;
 	m_pDataIn = m_pData;
 	m_nDataBytes = nBytes;

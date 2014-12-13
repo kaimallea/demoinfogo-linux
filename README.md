@@ -13,13 +13,19 @@ The repo contains the source code required to build this tool on linux. The sour
 Building demoinfogo
 ------------------
 
+Prequisites:
+
 - On Debian/Ubuntu, install the essential build tools: `sudo apt-get install build-essential`
-- On 64-bit systems, you'll install also need g++ multilib: `sudo apt-get install g++-multilib`
+- Additionally, if your Debian/Ubuntu OS is 64-bit, you'll also need g++ multilib: `sudo apt-get install g++-multilib`
+- On OSX, install the Command Line Tools: `xcode-select install`
 
-In order to build demoinfogo on Linux, follow these steps:
+In order to build demoinfogo, follow these steps:
 
-1. Run `make get_protobuf` to download [protobuf 2.5.0](https://protobuf.googlecode.com/files/protobuf-2.5.0.tar.gz), extract it to the root of this repo, then configure and compile it.
-2. Run `make` to compile and create `demoinfogo`
+1. Run `make get_protobuf` to download [protobuf 2.5.0](https://protobuf.googlecode.com/files/protobuf-2.5.0.tar.gz) and extract it to the root of this repo.
+2. Run `make protobuf` to configure and compile it.
+3. Run `make` to compile and create `demoinfogo`
+
+Both protobuf and demoinfogo are cross-compiled for 32-bit; otherwise it will not work.
 
 Working with Network Messages
 -----------------------------

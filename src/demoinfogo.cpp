@@ -132,5 +132,5 @@ int main( int argc, char *argv[] )
 		DemoFileDump.DoDump();
 	}
 
-	return 1;
+	return 0;
 }

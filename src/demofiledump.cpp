@@ -310,9 +310,11 @@ bool HandlePlayerConnectDisconnectEvents( const CSVCMsg_GameEvent &msg, const CS
 			}
 			// mark the player info slot as disconnected
 			player_info_t *pPlayerInfo = FindPlayerInfo( userid );
-			strcpy( pPlayerInfo->name, "disconnected" );
-			pPlayerInfo->userID = -1;
-			pPlayerInfo->guid[ 0 ] = 0;
+			if (pPlayerInfo) {
+				strcpy( pPlayerInfo->name, "disconnected" );
+				pPlayerInfo->userID = -1;
+				pPlayerInfo->guid[ 0 ] = 0;
+			}
 		}
 		else
 		{

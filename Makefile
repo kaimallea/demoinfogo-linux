@@ -43,7 +43,7 @@ src/generated_proto/cstrike15_usermessages_public.pb.cc: src/cstrike15_usermessa
 	mkdir -p src/generated_proto
 	$(PROTOBUF_SRC)/protoc --proto_path=./src --proto_path=$(PROTOBUF_SRC) --cpp_out=./src/generated_proto $<
 
-.PHONY: clean generated_proto protobuf
+.PHONY: clean get_protobuf protobuf
 
 clean:
 	rm -rf src/*.o src/generated_proto/*.pb.* demoinfogo

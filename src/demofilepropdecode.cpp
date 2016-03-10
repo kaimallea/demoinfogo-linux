@@ -29,6 +29,9 @@
 #include "google/protobuf/reflection_ops.h"
 #include "google/protobuf/descriptor.pb.h"
 
+
+#include "generated_proto/cstrike15_gcmessages.pb.h"
+#include "generated_proto/steammessages.pb.h"
 #include "generated_proto/cstrike15_usermessages_public.pb.h"
 #include "generated_proto/netmessages_public.pb.h"
 

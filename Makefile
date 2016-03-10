@@ -17,13 +17,13 @@ endif
 
 default: demoinfogo
 
-demoinfogo: src/demofile.o src/demofiledump.o src/demoinfogo.o src/demofilebitbuf.o src/demofilepropdecode.o src/generated_proto/netmessages_public.pb.cc src/generated_proto/cstrike15_usermessages_public.pb.cc
+demoinfogo: src/demofile.o src/demofiledump.o src/demoinfogo.o src/demofilebitbuf.o src/demofilepropdecode.o src/generated_proto/steammessages.pb.cc src/generated_proto/cstrike15_gcmessages.pb.cc src/generated_proto/netmessages_public.pb.cc src/generated_proto/cstrike15_usermessages_public.pb.cc
 	$(CC) $(INC) $^ $(PROTOBUF_LIB) $(LDFLAGS) -o $@
 
 src/demofile.o: src/demofile.cpp
 	$(CC) $(CFLAGS) $(INC) -c $< -o $@
 
-src/demofiledump.o: src/demofiledump.cpp src/generated_proto/netmessages_public.pb.cc src/generated_proto/cstrike15_usermessages_public.pb.cc
+src/demofiledump.o: src/demofiledump.cpp src/generated_proto/steammessages.pb.cc src/generated_proto/cstrike15_gcmessages.pb.cc src/generated_proto/netmessages_public.pb.cc src/generated_proto/cstrike15_usermessages_public.pb.cc
 	$(CC) $(CFLAGS) $(INC) -c $< -o $@
 
 src/demoinfogo.o: src/demoinfogo.cpp
@@ -34,6 +34,14 @@ src/demofilebitbuf.o: src/demofilebitbuf.cpp
 
 src/demofilepropdecode.o: src/demofilepropdecode.cpp
 	$(CC) $(CFLAGS) $(INC) -c $< -o $@
+
+src/generated_proto/steammessages.pb.cc: src/steammessages.proto
+	mkdir -p src/generated_proto
+	$(PROTOBUF_SRC)/protoc --proto_path=./src --proto_path=$(PROTOBUF_SRC) --cpp_out=./src/generated_proto $<
+
+src/generated_proto/cstrike15_gcmessages.pb.cc: src/cstrike15_gcmessages.proto
+	mkdir -p src/generated_proto
+	$(PROTOBUF_SRC)/protoc --proto_path=./src --proto_path=$(PROTOBUF_SRC) --cpp_out=./src/generated_proto $<
 
 src/generated_proto/netmessages_public.pb.cc: src/netmessages_public.proto
 	mkdir -p src/generated_proto

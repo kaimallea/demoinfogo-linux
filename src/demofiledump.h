@@ -29,6 +29,8 @@
 #include "demofilebitbuf.h"
 #include "demofilepropdecode.h"
 
+
+#include "generated_proto/steammessages.pb.h"
 #include "generated_proto/netmessages_public.pb.h"
 
 #define NET_MAX_PAYLOAD					( 262144 - 4 )		// largest message we can send in bytes

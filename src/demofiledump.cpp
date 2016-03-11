@@ -31,6 +31,8 @@
 #include "google/protobuf/reflection_ops.h"
 #include "google/protobuf/descriptor.pb.h"
 
+#include "generated_proto/cstrike15_gcmessages.pb.h"
+#include "generated_proto/steammessages.pb.h"
 #include "generated_proto/cstrike15_usermessages_public.pb.h"
 #include "generated_proto/netmessages_public.pb.h"
 
@@ -161,22 +163,35 @@ void CDemoFileDump::DumpUserMessage( const void *parseBuffer, int BufferSize )
 			HANDLE_UserMsg( AchievementEvent );
 			HANDLE_UserMsg( MatchEndConditions );
 			HANDLE_UserMsg( DisconnectToLobby );
+			HANDLE_UserMsg( PlayerStatsUpdate );
 			HANDLE_UserMsg( DisplayInventory );
 			HANDLE_UserMsg( WarmupHasEnded );
 			HANDLE_UserMsg( ClientInfo );
+			HANDLE_UserMsg( XRankGet );
+			HANDLE_UserMsg( XRankUpd );
 			HANDLE_UserMsg( CallVoteFailed );
 			HANDLE_UserMsg( VoteStart );
 			HANDLE_UserMsg( VotePass );
 			HANDLE_UserMsg( VoteFailed );
 			HANDLE_UserMsg( VoteSetup );
+			HANDLE_UserMsg( ServerRankRevealAll );
 			HANDLE_UserMsg( SendLastKillerDamageToClient );
+			HANDLE_UserMsg( ServerRankUpdate );
 			HANDLE_UserMsg( ItemPickup );
 			HANDLE_UserMsg( ShowMenu );
 			HANDLE_UserMsg( BarTime );
 			HANDLE_UserMsg( AmmoDenied );
 			HANDLE_UserMsg( MarkAchievement );
+			HANDLE_UserMsg( MatchStatsUpdate );
 			HANDLE_UserMsg( ItemDrop );
 			HANDLE_UserMsg( GlowPropTurnOff );
+			HANDLE_UserMsg( SendPlayerItemDrops );
+			HANDLE_UserMsg( RoundBackupFilenames );
+			HANDLE_UserMsg( SendPlayerItemFound );
+			HANDLE_UserMsg( ReportHit );
+			HANDLE_UserMsg( XpUpdate );
+			HANDLE_UserMsg( QuestProgress );
+			HANDLE_UserMsg( ScoreLeaderboardData );
 
 #undef HANDLE_UserMsg
 		}

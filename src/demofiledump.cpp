@@ -61,6 +61,7 @@ static bool s_bMatchStartOccured = false;
 static int s_nCurrentTick;
 
 EntityEntry *FindEntity( int nEntity );
+player_info_t *FindPlayerByEntity(int entityID);
 
 void fatal_errorf( const char* fmt, ... )
 {
@@ -221,6 +222,19 @@ void PrintNetMessage< CSVCMsg_UserMessage, svc_UserMessage >( CDemoFileDump& Dem
 	Demo.DumpUserMessage( parseBuffer, BufferSize );
 }
 
+player_info_t *FindPlayerByEntity( int entityId )
+{
+	for ( std::vector< player_info_t >::iterator j = s_PlayerInfos.begin(); j != s_PlayerInfos.end(); j++ )
+	{
+		if ( j->entityID == entityId )
+		{
+			return &(*j);
+		}
+	}
+
+	return NULL;
+}
+
 player_info_t *FindPlayerInfo( int userId )
 {
 	for ( std::vector< player_info_t >::iterator i = s_PlayerInfos.begin(); i != s_PlayerInfos.end(); i++ )
@@ -232,21 +246,6 @@ player_info_t *FindPlayerInfo( int userId )
 	}
 
 	return NULL;
-}
-
-int FindPlayerEntityIndex( int userId )
-{
-	int nIndex = 0;
-	for ( std::vector< player_info_t >::iterator i = s_PlayerInfos.begin(); i != s_PlayerInfos.end(); i++ )
-	{
-		if (  i->userID == userId )
-		{
-			return nIndex;
-		}
-		nIndex++;
-	}
-
-	return -1;
 }
 
 const CSVCMsg_GameEventList::descriptor_t *GetGameEventDescriptor( const CSVCMsg_GameEvent &msg, CDemoFileDump& Demo )
@@ -343,21 +342,20 @@ bool HandlePlayerConnectDisconnectEvents( const CSVCMsg_GameEvent &msg, const CS
 				strcpy( newPlayer.guid, "BOT" );
 			}
 				
-			if ( index < s_PlayerInfos.size() )
-			{
-				// only replace existing player slot if the userID is different (very unlikely)
-				if ( s_PlayerInfos[ index ].userID != userid )
-				{
-					s_PlayerInfos[ index ] = newPlayer;
-				}
-			}
-			else
+			newPlayer.entityID = index;
+			auto existing = FindPlayerByEntity(index);
+
+			// add entity if it doesn't exist, update if it does
+			if ( !existing ) 
 			{
 				if ( g_bDumpGameEvents )
 				{
-					printf( "Player %s %s (id:%d) connected.\n", newPlayer.guid, name, userid );
+					printf("Player %s %s (id:%d) connected.\n", newPlayer.guid, name, userid);
 				}
-				s_PlayerInfos.push_back( newPlayer );
+				s_PlayerInfos.push_back(newPlayer);
+			}
+			else {
+				*existing = newPlayer;
 			}
 		}
 		return true;
@@ -381,7 +379,7 @@ bool ShowPlayerInfo( const char *pField, int nIndex, bool bShowDetails = true, b
 
 		if ( bShowDetails )
 		{
-			int nEntityIndex = FindPlayerEntityIndex( nIndex ) + 1;
+			int nEntityIndex = pPlayerInfo->entityID + 1;
 			EntityEntry *pEntity = FindEntity( nEntityIndex );
 			if ( pEntity )
 			{
@@ -693,20 +691,22 @@ void ParseStringTableUpdate( CBitRead &buf, int entries, int nMaxEntries, int us
 		{
 			const player_info_t *pUnswappedPlayerInfo = ( const player_info_t * )pUserData;
 			player_info_t playerInfo = *pUnswappedPlayerInfo;
+			playerInfo.entityID = entryIndex;
 
 			LowLevelByteSwap( &playerInfo.xuid, &pUnswappedPlayerInfo->xuid );
 			LowLevelByteSwap( &playerInfo.userID, &pUnswappedPlayerInfo->userID );
 			LowLevelByteSwap( &playerInfo.friendsID, &pUnswappedPlayerInfo->friendsID );
 
 			bool bAdded = false;
-			if ( (unsigned int)entryIndex < s_PlayerInfos.size() )
-			{
-				s_PlayerInfos[ entryIndex ] = playerInfo;
-			}
-			else
+			auto existing = FindPlayerByEntity( entryIndex );
+			if ( !existing )
 			{
 				bAdded = true;
 				s_PlayerInfos.push_back( playerInfo );
+			}
+			else 
+			{
+				*existing = playerInfo;
 			}
 
 			if ( g_bDumpStringTables )
@@ -1557,19 +1557,28 @@ bool DumpStringTable( CBitRead &buf, bool bIsUserInfo )
 			{
 				const player_info_t *pUnswappedPlayerInfo = ( const player_info_t * )data;
 				player_info_t playerInfo = *pUnswappedPlayerInfo;
+				playerInfo.entityID = i;
 
 				LowLevelByteSwap( &playerInfo.xuid, &pUnswappedPlayerInfo->xuid );
 				LowLevelByteSwap( &playerInfo.userID, &pUnswappedPlayerInfo->userID );
 				LowLevelByteSwap( &playerInfo.friendsID, &pUnswappedPlayerInfo->friendsID );
-
-				if ( g_bDumpStringTables )
+				
+				//shouldn't ever exist, but just incase
+				auto existing = FindPlayerByEntity(i);
+				if (!existing)
 				{
-					printf( "adding:player info:\n xuid:%" PRId64 "\n name:%s\n userID:%d\n guid:%s\n friendsID:%d\n friendsName:%s\n fakeplayer:%d\n ishltv:%d\n filesDownloaded:%d\n",
-						playerInfo.xuid, playerInfo.name, playerInfo.userID, playerInfo.guid, playerInfo.friendsID,
-						playerInfo.friendsName, playerInfo.fakeplayer, playerInfo.ishltv, playerInfo.filesDownloaded );
+					if (g_bDumpStringTables)
+					{
+						printf("adding:player entity:%d info:\n xuid:%lld\n name:%s\n userID:%d\n guid:%s\n friendsID:%d\n friendsName:%s\n fakeplayer:%d\n ishltv:%d\n filesDownloaded:%d\n",
+							i, playerInfo.xuid, playerInfo.name, playerInfo.userID, playerInfo.guid, playerInfo.friendsID,
+							playerInfo.friendsName, playerInfo.fakeplayer, playerInfo.ishltv, playerInfo.filesDownloaded);
+					}
+					s_PlayerInfos.push_back(playerInfo);
 				}
-
-				s_PlayerInfos.push_back( playerInfo );
+				else
+				{
+					*existing = playerInfo;
+				}
 			}
 			else
 			{

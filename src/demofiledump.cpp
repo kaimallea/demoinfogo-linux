@@ -371,7 +371,7 @@ bool ShowPlayerInfo( const char *pField, int nIndex, bool bShowDetails = true, b
 	{
 		if ( bCSV )
 		{
-			printf( "%s, %s", pPlayerInfo->name, pPlayerInfo->guid );
+			printf( "%s,%s", pPlayerInfo->name, pPlayerInfo->guid );
 		}
 		else
 		{
@@ -390,7 +390,7 @@ bool ShowPlayerInfo( const char *pField, int nIndex, bool bShowDetails = true, b
 				{
 					if ( bCSV )
 					{
-						printf( ", %f, %f, %f", pXYProp->m_pPropValue->m_value.m_vector.x, pXYProp->m_pPropValue->m_value.m_vector.y, pZProp->m_pPropValue->m_value.m_float );
+						printf( ",%f,%f,%f", pXYProp->m_pPropValue->m_value.m_vector.x, pXYProp->m_pPropValue->m_value.m_vector.y, pZProp->m_pPropValue->m_value.m_float );
 					}
 					else
 					{
@@ -403,7 +403,7 @@ bool ShowPlayerInfo( const char *pField, int nIndex, bool bShowDetails = true, b
 				{
 					if ( bCSV )
 					{
-						printf( ", %f, %f", pAngle0Prop->m_pPropValue->m_value.m_float, pAngle1Prop->m_pPropValue->m_value.m_float );
+						printf( ",%f,%f", pAngle0Prop->m_pPropValue->m_value.m_float, pAngle1Prop->m_pPropValue->m_value.m_float );
 					}
 					else
 					{
@@ -415,7 +415,7 @@ bool ShowPlayerInfo( const char *pField, int nIndex, bool bShowDetails = true, b
 				{
 					if ( bCSV )
 					{
-						printf( ", %s", ( pTeamProp->m_pPropValue->m_value.m_int == 2 ) ? "T" : "CT" );
+						printf( ",%s", ( pTeamProp->m_pPropValue->m_value.m_int == 2 ) ? "T" : "CT" );
 					}
 					else
 					{
@@ -467,12 +467,20 @@ void HandlePlayerDeath( const CSVCMsg_GameEvent &msg, const CSVCMsg_GameEventLis
 
 	printf ("%d,", s_nCurrentRound );
 	ShowPlayerInfo( "victim", userid, true, true );
-	printf ( ", " );
-	ShowPlayerInfo( "attacker", attackerid, true, true );
-	printf( ", %s, %s", pWeaponName, bHeadshot ? "true" : "false" );
+	printf ( "," );
+	if ( attackerid == 0 )
+	{
+		printf( "worldspawn,worldspawn,0,0,0,0,0,worldspawn,worldspawn,false" );
+	}
+	else
+	{
+		ShowPlayerInfo( "attacker", attackerid, true, true );
+		printf( ",%s,%s", pWeaponName, bHeadshot ? "true" : "false" );
+	}
+
 	if ( assisterid != 0 )
 	{
-		printf ( ", " );
+		printf ( "," );
 		ShowPlayerInfo( "assister", assisterid, true, true );
 	}
 	printf( "\n" );

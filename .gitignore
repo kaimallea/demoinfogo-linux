@@ -1,4 +1,5 @@
 .vagrant
+.idea
 demoinfogo
 src/generated_proto/
 protobuf-2.5.0

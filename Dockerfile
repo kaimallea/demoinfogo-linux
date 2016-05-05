@@ -5,8 +5,8 @@ RUN apt-get -qq update && apt-get install -y curl build-essential g++-multilib
 RUN mkdir /demoinfogo
 WORKDIR /demoinfogo
 ADD Makefile /demoinfogo/
-ADD src/ /demoinfogo/src/
 RUN make get_protobuf
 RUN make protobuf
+ADD src/ /demoinfogo/src/
 RUN make
 ENTRYPOINT ["/bin/bash"]

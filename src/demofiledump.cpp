@@ -370,7 +370,7 @@ bool ShowPlayerInfo( const char *pField, int nIndex, bool bShowDetails = true, b
 	{
 		if ( bCSV )
 		{
-			printf( "%s, %s, %d", pField, pPlayerInfo->name, nIndex );
+			printf( "%s, %s", pPlayerInfo->name, pPlayerInfo->guid );
 		}
 		else
 		{

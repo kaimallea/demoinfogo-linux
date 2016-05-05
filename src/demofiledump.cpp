@@ -59,6 +59,7 @@ extern bool g_bDumpNetMessages;
 
 static bool s_bMatchStartOccured = false;
 static int s_nCurrentTick;
+static int s_nCurrentRound = 0;
 
 EntityEntry *FindEntity( int nEntity );
 player_info_t *FindPlayerByEntity(int entityID);
@@ -463,7 +464,8 @@ void HandlePlayerDeath( const CSVCMsg_GameEvent &msg, const CSVCMsg_GameEventLis
 			bHeadshot = KeyValue.val_bool();
 		}
 	}
-	
+
+	printf ("%d,", s_nCurrentRound );
 	ShowPlayerInfo( "victim", userid, true, true );
 	printf ( ", " );
 	ShowPlayerInfo( "attacker", attackerid, true, true );
@@ -488,6 +490,12 @@ void ParseGameEvent( const CSVCMsg_GameEvent &msg, const CSVCMsg_GameEventList::
 				if ( pDescriptor->name().compare( "round_announce_match_start" ) == 0 )
 				{
 					s_bMatchStartOccured = true;
+					s_nCurrentRound = 1;
+				}
+
+				if ( s_bMatchStartOccured && pDescriptor->name().compare( "round_start" ) == 0 )
+				{
+					++s_nCurrentRound;
 				}
 
 				bool bAllowDeathReport = !g_bSupressWarmupDeaths || s_bMatchStartOccured;

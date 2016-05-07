@@ -49,8 +49,6 @@ int main( int argc, char *argv[] )
 				" -extrainfo     Show extra player info when dumping out game events.\n" \
 				"                Should be after -gameevents.\n" \
 				" -deathscsv     Dump out player death info in CSV form.\n" \
-				" -nowarmup      Skip deaths during warm up when dumping player deaths.\n" \
-				"                Should be after -deaths.\n" \
 				" -stringtables  Dump string tables.\n" \
 				" -datatables    Dump data tables. (send tables)\n" \
 				" -packetentites Dump Packet Entities messages.\n" \
@@ -84,11 +82,6 @@ int main( int argc, char *argv[] )
 				else if ( strcasecmp( &argv[i][1], "deathscsv" ) == 0 )
 				{
 					g_bDumpDeaths = true;
-					g_bSupressWarmupDeaths = false;
-				}
-				else if ( strcasecmp( &argv[i][1], "nowarmup" ) == 0 )
-				{
-					g_bSupressWarmupDeaths = true;
 				}
 				else if ( strcasecmp( &argv[i][1], "stringtables" ) == 0 )
 				{

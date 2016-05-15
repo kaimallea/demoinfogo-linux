@@ -60,6 +60,7 @@ extern bool g_bDumpNetMessages;
 static bool s_bMatchStartOccured = false;
 static int s_nCurrentTick;
 static int s_nCurrentRound = 0;
+static char s_sMapName[256];
 
 EntityEntry *FindEntity( int nEntity );
 player_info_t *FindPlayerByEntity(int entityID);
@@ -465,6 +466,7 @@ void HandlePlayerDeath( const CSVCMsg_GameEvent &msg, const CSVCMsg_GameEventLis
 		}
 	}
 
+	printf ("%s,", s_sMapName );
 	printf ("%d,", s_nCurrentRound );
 	ShowPlayerInfo( "victim", userid, true, true );
 	printf ( "," );
@@ -586,6 +588,17 @@ void PrintNetMessage< CSVCMsg_GameEvent, svc_GameEvent >( CDemoFileDump& Demo, c
 		{
 			ParseGameEvent( msg, pDescriptor );
 		}
+	}
+}
+
+template <>
+void PrintNetMessage< CSVCMsg_ServerInfo, svc_ServerInfo >( CDemoFileDump& Demo, const void *parseBuffer, int BufferSize )
+{
+	CSVCMsg_ServerInfo msg;
+
+	if ( msg.ParseFromArray( parseBuffer, BufferSize ) )
+	{
+		strcpy( s_sMapName, msg.map_name().c_str() );
 	}
 }
 

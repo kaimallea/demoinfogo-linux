@@ -57,7 +57,7 @@ clean:
 	rm -rf src/*.o src/generated_proto/*.pb.* demoinfogo
 
 get_protobuf:
-	curl https://protobuf.googlecode.com/files/protobuf-2.5.0.tar.gz | tar xvz
+	curl -L https://github.com/google/protobuf/releases/download/v2.5.0/protobuf-2.5.0.tar.gz | tar xvz
 
 protobuf:
 	cd protobuf-2.5.0 ; ./configure CFLAGS="-O3 -m32 -DNDEBUG" CXXFLAGS="-m32 -DNDEBUG" LDFLAGS=-m32 ; make

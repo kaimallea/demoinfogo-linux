@@ -1,24 +1,24 @@
 //====== Copyright (c) 2012, Valve Corporation, All rights reserved. ========//
 //
-// Redistribution and use in source and binary forms, with or without 
+// Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are met:
 //
 // Redistributions of source code must retain the above copyright notice, this
 // list of conditions and the following disclaimer.
-// Redistributions in binary form must reproduce the above copyright notice, 
-// this list of conditions and the following disclaimer in the documentation 
+// Redistributions in binary form must reproduce the above copyright notice,
+// this list of conditions and the following disclaimer in the documentation
 // and/or other materials provided with the distribution.
 //
 // THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-// AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE 
-// IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE 
-// ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE 
-// LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR 
-// CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF 
-// SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS 
-// INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN 
-// CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
-// ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF 
+// AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+// IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+// ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
+// LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+// CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+// SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+// INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+// CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+// ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
 // THE POSSIBILITY OF SUCH DAMAGE.
 //===========================================================================//
 
@@ -43,18 +43,18 @@ int main( int argc, char *argv[] )
 	{
 		printf( "demoinfogo filename.dem\n" );
 		printf( "optional arguments:\n" \
-				" -gameevents    Dump out game events.\n" \
-				" -nofootsteps   Skip footstep events when dumping out game events.\n" \
-				"                Should be after -gameevents.\n" \
-				" -extrainfo     Show extra player info when dumping out game events.\n" \
-				"                Should be after -gameevents.\n" \
-				" -deathscsv     Dump out player death info in CSV form.\n" \
-				" -nowarmup      Skip deaths during warm up when dumping player deaths.\n" \
-				"                Should be after -deaths.\n" \
-				" -stringtables  Dump string tables.\n" \
-				" -datatables    Dump data tables. (send tables)\n" \
-				" -packetentites Dump Packet Entities messages.\n" \
-				" -netmessages   Dump net messages that are not one of the above.\n" \
+				" -gameevents     Dump out game events.\n" \
+				" -nofootsteps    Skip footstep events when dumping out game events.\n" \
+				"                 Should be after -gameevents.\n" \
+				" -extrainfo      Show extra player info when dumping out game events.\n" \
+				"                 Should be after -gameevents.\n" \
+				" -deathscsv      Dump out player death info in CSV form.\n" \
+				" -nowarmup       Skip deaths during warm up when dumping player deaths.\n" \
+				"                 Should be after -deaths.\n" \
+				" -stringtables   Dump string tables.\n" \
+				" -datatables     Dump data tables. (send tables)\n" \
+				" -packetentities Dump Packet Entities messages.\n" \
+				" -netmessages    Dump net messages that are not one of the above.\n" \
 				"Note: by default everything is dumped out.\n" );
 		exit( 0 );
 	}

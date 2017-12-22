@@ -51,7 +51,7 @@ src/generated_proto/cstrike15_usermessages_public.pb.cc: src/cstrike15_usermessa
 	mkdir -p src/generated_proto
 	$(PROTOBUF_SRC)/protoc --proto_path=./src --proto_path=$(PROTOBUF_SRC) --cpp_out=./src/generated_proto $<
 
-.PHONY: clean get_protobuf protobuf
+.PHONY: clean get_protobuf protobuf image container
 
 clean:
 	rm -rf src/*.o src/generated_proto/*.pb.* demoinfogo
@@ -61,3 +61,10 @@ get_protobuf:
 
 protobuf:
 	cd protobuf-2.5.0 ; ./configure CFLAGS="-O3 -m32 -DNDEBUG" CXXFLAGS="-m32 -DNDEBUG" LDFLAGS=-m32 ; make
+
+image:
+	docker build -t demoinfogo:latest .
+
+container:
+	docker run -it --rm --name demoinfogo -v $(PWD):/demoinfogo demoinfogo:latest
+

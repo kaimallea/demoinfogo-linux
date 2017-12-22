@@ -1,4 +1,4 @@
-[![Build Status](https://api.travis-ci.org/csgo-data/demoinfogo-linux.svg?branch=travis)](https://travis-ci.org/csgo-data/demoinfogo-linux)
+[![Build Status](https://travis-ci.org/kaimallea/demoinfogo-linux.svg?branch=master)](https://travis-ci.org/csgo-data/demoinfogo-linux)
 
 CS:GO Demos and Network Messages
 --------------------------------

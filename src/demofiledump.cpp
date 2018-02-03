@@ -592,7 +592,6 @@ void ParseStringTableUpdate( CBitRead &buf, int entries, int nMaxEntries, int us
 	};
 
 	int lastEntry = -1;
-	int lastDictionaryIndex = -1;
 
 	// perform integer log2() to set nEntryBits
 	int nTemp = nMaxEntries;
@@ -660,7 +659,7 @@ void ParseStringTableUpdate( CBitRead &buf, int entries, int nMaxEntries, int us
 		unsigned char tempbuf[ MAX_USERDATA_SIZE ];
 		memset( tempbuf, 0, sizeof( tempbuf ) );
 		const void *pUserData = NULL;
-		int nBytes = 0;
+		unsigned int nBytes = 0;
 
 		if ( buf.ReadOneBit() )
 		{
@@ -725,7 +724,7 @@ void ParseStringTableUpdate( CBitRead &buf, int entries, int nMaxEntries, int us
 		{
 			if ( g_bDumpStringTables )
 			{
-				printf( " %d, %s, %d, %s \n", entryIndex, pEntry, nBytes, pUserData );
+				printf( " %d, %s, %d, %p \n", entryIndex, pEntry, nBytes, pUserData );
 			}
 		}
 
@@ -832,7 +831,7 @@ CSVCMsg_SendTable *GetTableByClassID( uint32 nClassID )
 {
 	for ( uint32 i = 0; i < s_ServerClasses.size(); i++ )
 	{
-		if ( s_ServerClasses[ i ].nClassID == nClassID )
+		if ( static_cast< uint32 >(s_ServerClasses[ i ].nClassID) == nClassID )
 		{
 			return &(s_DataTables[ s_ServerClasses[i].nDataTable ]);
 		}
@@ -1000,7 +999,7 @@ void FlattenDataTable( int nServerClass )
 			{
 				const CSVCMsg_SendTable::sendprop_t *prop = flattenedProps[currentProp].m_prop;
 
-				if (prop->priority() == priority || (priority == 64 && (SPROP_CHANGES_OFTEN & prop->flags()))) 
+				if (static_cast< uint32 >(prop->priority()) == priority || (priority == 64 && (SPROP_CHANGES_OFTEN & prop->flags()))) 
 				{
 					if ( start != currentProp )
 					{
@@ -1161,6 +1160,9 @@ void PrintNetMessage< CSVCMsg_PacketEntities, svc_PacketEntities >( CDemoFileDum
 		int nHeaderBase = -1;
 		int nNewEntity = -1;
 		int UpdateFlags = 0;
+
+		(void) nBaseline;
+		(void) bUpdateBaselines;
 
 		UpdateType updateType = PreserveEnt;
 
@@ -1451,7 +1453,8 @@ bool ParseDataTable( CBitRead &buf )
 	while ( 1 )
 	{
 		int type = buf.ReadVarInt32();
-		
+		(void)type;
+
 		void *pBuffer = NULL;
 		int size = 0;
 		if ( !ReadFromBuffer( buf, &pBuffer, size ) )

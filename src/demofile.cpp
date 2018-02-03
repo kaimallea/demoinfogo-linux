@@ -130,6 +130,9 @@ bool CDemoFile::Open( const char *name )
 {
 	Close();
 
+	size_t read_size;
+	(void) read_size;
+
 	FILE *fp = NULL;
 	fp = fopen( name, "rb" );
 	if( fp )
@@ -147,7 +150,7 @@ bool CDemoFile::Open( const char *name )
 			return false;
 		}
 
-		fread( &m_DemoHeader, 1, sizeof( m_DemoHeader ), fp );
+		read_size = fread( &m_DemoHeader, 1, sizeof( m_DemoHeader ), fp );
 		Length -= sizeof( m_DemoHeader );
 
 		if ( strcmp ( m_DemoHeader.demofilestamp, DEMO_HEADER_ID ) )
@@ -165,7 +168,7 @@ bool CDemoFile::Open( const char *name )
 		}
 
 		m_fileBuffer.resize( Length );
-		fread( &m_fileBuffer[ 0 ], 1, Length, fp );
+		read_size = fread( &m_fileBuffer[ 0 ], 1, Length, fp );
 
 		fclose( fp );
 		fp = NULL;

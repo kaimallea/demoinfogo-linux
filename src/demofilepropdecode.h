@@ -121,6 +121,8 @@ struct Prop_t
 					printf( "%" PRIu64 "\n", m_value.m_int64 );
 				}
 				break;
+			case DPT_NUMSendPropTypes:
+				break;
 		}
 
 		if ( m_nNumElements > 1 )

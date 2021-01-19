@@ -688,7 +688,7 @@ void CBitRead::ReadBitAngles( QAngle& fa )
 float CBitRead::ReadBitFloat( void )
 {
 	uint32 nvalue = ReadUBitLong( 32 );
-	float fvalue = (float) nvalue;
+	float fvalue = *reinterpret_cast<float*>(&nvalue);
 	return fvalue;
 }
 
